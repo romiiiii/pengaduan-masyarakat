@@ -107,15 +107,54 @@ include('../../configuration/koneksi.php');
                                         }
                                     ?>
                                 <td><?= $p -> status ?></td>
-                                <?php 
-                                    if($_SESSION['level'] == 'admin' || $_SESSION['level'] == 'petugas'){
-                                        ?> 
-                                            <td>
-                                                <a href="#beri-tanggapan" name="tanggapi" id="tanggapi" class="btn text-decoration-underline"><i class="fas fa-reply"></i>Tanggapi</a>
-                                            </td>
-                                        <?php
-                                    }
-                                ?>
+                                <td>
+                                <button type="button" class="btn text-white" style="background-color: darkcyan;" data-bs-toggle="modal" data-bs-target="#exampleModal<?= $p -> id_pengaduan ?>">
+                                    <i class="fas fa-reply"></i> Tanggapi
+                                </button>
+
+                                <div class="modal fade" id="exampleModal<?= $p -> id_pengaduan ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel"> Perbarui data</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="" method="post">
+                                                    <input type="hidden" name="id_pengaduan" value="<?= $p -> id_pengaduan ?>">
+                                                    <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        <input type="hidden" name="idPetugas" id="idPetugas" value="<?= $_SESSION['id_petugas'] ?>">
+                                                    </div>
+                                                            <div class="mb-3">
+                                                                <div class="form-group"><label for="tgl">Tanggal Tanggapan</label>
+                                                                    <input class="form-control" type="date" name="tgl">
+                                                                </div>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <select name="status" id="status" class="form-select" aria-label="Default select example">
+                                                                    <option value="proses">Diproses</option>
+                                                                    <option value="selesai">Selesai</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="tanggapan" class="form-label">Tanggapan</label>
+                                                                <textarea class="form-control" id="tanggapan" name="tanggapan" rows="3"></textarea>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <button type="button" class="btn w-100 btn-secondary" data-bs-dismiss="modal">tutup</button>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <button type="submit" class="btn w-100 text-white" name="tanggap" id="tanggap" style="background-color: darkcyan;">Kirim Tanggapan</button>
+                                                            </div>
+                                                    </div>
+                                                </form>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                </td>
                             </tr>
                         <?php
                     }
@@ -155,21 +194,21 @@ include('../../configuration/koneksi.php');
                         </form>
                     </div>
                 <?php
-            }else{
+            }
                 ?> 
-                    <div class="card-footer" id="beri-tanggapan">
+                    <!-- <div class="card-footer" id="beri-tanggapan">
                         <h5 class="fw-bold mb-5">.: Beri Tanggapan :.</h5>
                         <form action="" method="POST">
                             <div class="mb-3">
                                 <label for="id_pengaduan" class="mb-3">Pilih ID Pengaduan yang Ingin ditanggapi</label>
                                 <select name="id_pengaduan" class="form-select" aria-label="Default select example">
-                                    <?php
+                                    
                                         include('../../configuration/koneksi.php'); 
                                         $q = mysqli_query($con, "SELECT * FROM pengaduan");
                                         while($o = mysqli_fetch_object($q)){
                                             ?> 
                                                 <option value="<?= $o -> id_pengaduan ?>"><?= $o -> id_pengaduan ?></option>
-                                            <?php
+                                            
                                         }
                                     ?>
                                 </select>
@@ -196,11 +235,11 @@ include('../../configuration/koneksi.php');
                                     <button type="submit" class="btn w-100 text-white" name="tanggap" id="tanggap" style="background-color: darkcyan;">Kirim Tanggapan</button>
                                 </div>
                             </div>
-                        </form>
+                        </form> -->
                     </div>
-                <?php
+                <!-- 
             }
-            ?>
+            ?> -->
         </div>
     </div>
 
