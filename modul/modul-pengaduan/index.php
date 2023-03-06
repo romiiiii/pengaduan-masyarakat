@@ -65,6 +65,53 @@ include('../../configuration/koneksi.php');
                 <p class="fs-4 fw-bold">.: Pengaduan :.</p>
             </div>
             <div class="card-body">
+            <?php 
+                    if($_SESSION['level'] == 'masyarakat'){
+                        ?> 
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambahmodal">
+                            <i class="fas fa-plus"></i> Buat Pengaduan
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="tambahmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">.: Buat Pengaduan :.</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="" method="POST" enctype="multipart/form-data">
+                                        <div class="mb-3">
+                                            <label for="tgl" class="form-label">Tanggal Pengaduan</label>
+                                            <input type="date" class="form-control" id="tgl" name="tgl" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="nik" class="form-label">NIK (terisi otomatis)</label>
+                                            <input type="text" readonly class="form-control-plaintext" id="nik" name="nik" value="<?= $_SESSION['nik'] ?>">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="pengaduan" class="form-label">Hal yang ingin Dilaporkan</label>
+                                            <textarea class="form-control" id="pengaduan" name="pengaduan" rows="3"></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="foto" class="form-label">Foto</label>
+                                            <input type="file" class="form-control" name="foto">
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-4">
+                                                <button type="submit" class="btn w-100 text-white" name="tambahPengaduan" id="buat" style="background-color: darkcyan;">Buat Laporan</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        <?php
+                    }
+                ?>
                 <table id="dataTablesNya" class="table table-success table-striped table-hover mt-3">
                     <thead>
                     <tr>
@@ -107,54 +154,62 @@ include('../../configuration/koneksi.php');
                                         }
                                     ?>
                                 <td><?= $p -> status ?></td>
-                                <td>
-                                <button type="button" class="btn text-white" style="background-color: darkcyan;" data-bs-toggle="modal" data-bs-target="#exampleModal<?= $p -> id_pengaduan ?>">
-                                    <i class="fas fa-reply"></i> Tanggapi
-                                </button>
+                                    <?php 
+                                        if($_SESSION['level'] == 'masyarakat'){
+                                            true;
+                                        }else{
+                                            ?> 
+                                            <td>
+                                                <button type="button" class="btn text-white" style="background-color: darkcyan;" data-bs-toggle="modal" data-bs-target="#exampleModal<?= $p -> id_pengaduan ?>">
+                                                    <i class="fas fa-reply"></i> Tanggapi
+                                                </button>
 
-                                <div class="modal fade" id="exampleModal<?= $p -> id_pengaduan ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel"> Perbarui data</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="" method="post">
-                                                    <input type="hidden" name="id_pengaduan" value="<?= $p -> id_pengaduan ?>">
-                                                    <div class="modal-body">
-                                                    <div class="mb-3">
-                                                        <input type="hidden" name="idPetugas" id="idPetugas" value="<?= $_SESSION['id_petugas'] ?>">
+                                                <div class="modal fade" id="exampleModal<?= $p -> id_pengaduan ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel"> Perbarui data</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="" method="post">
+                                                                    <input type="hidden" name="id_pengaduan" value="<?= $p -> id_pengaduan ?>">
+                                                                    <div class="modal-body">
+                                                                    <div class="mb-3">
+                                                                        <input type="hidden" name="idPetugas" id="idPetugas" value="<?= $_SESSION['id_petugas'] ?>">
+                                                                    </div>
+                                                                            <div class="mb-3">
+                                                                                <div class="form-group"><label for="tgl">Tanggal Tanggapan</label>
+                                                                                    <input class="form-control" type="date" name="tgl">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="mb-3">
+                                                                                <select name="status" id="status" class="form-select" aria-label="Default select example">
+                                                                                    <option value="proses">Diproses</option>
+                                                                                    <option value="selesai">Selesai</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="mb-3">
+                                                                                <label for="tanggapan" class="form-label">Tanggapan</label>
+                                                                                <textarea class="form-control" id="tanggapan" name="tanggapan" rows="3"></textarea>
+                                                                            </div>
+                                                                            <div class="mb-3">
+                                                                                <button type="button" class="btn w-100 btn-secondary" data-bs-dismiss="modal">tutup</button>
+                                                                            </div>
+                                                                            <div class="mb-3">
+                                                                                <button type="submit" class="btn w-100 text-white" name="tanggap" id="tanggap" style="background-color: darkcyan;">Kirim Tanggapan</button>
+                                                                            </div>
+                                                                    </div>
+                                                                </form>  
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                            <div class="mb-3">
-                                                                <div class="form-group"><label for="tgl">Tanggal Tanggapan</label>
-                                                                    <input class="form-control" type="date" name="tgl">
-                                                                </div>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <select name="status" id="status" class="form-select" aria-label="Default select example">
-                                                                    <option value="proses">Diproses</option>
-                                                                    <option value="selesai">Selesai</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="tanggapan" class="form-label">Tanggapan</label>
-                                                                <textarea class="form-control" id="tanggapan" name="tanggapan" rows="3"></textarea>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <button type="button" class="btn w-100 btn-secondary" data-bs-dismiss="modal">tutup</button>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <button type="submit" class="btn w-100 text-white" name="tanggap" id="tanggap" style="background-color: darkcyan;">Kirim Tanggapan</button>
-                                                            </div>
-                                                    </div>
-                                                </form>  
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                </div>
-                                </td>
+                                                </div>
+                                                </div>
+                                                            <?php
+                                                        }
+                                                    ?>
+                                            </td>
                             </tr>
                         <?php
                     }
@@ -162,84 +217,6 @@ include('../../configuration/koneksi.php');
                     </tbody>
                 </table>
             </div>
-
-            <?php 
-            @session_start();
-            if($_SESSION['level'] == 'masyarakat'){
-                ?> 
-                    <div class="card-footer">
-                    <h5 class="fw-bold mb-5">.: Buat Pengaduan :.</h5>
-                        <form action="" method="POST" enctype="multipart/form-data">
-                            <div class="mb-3">
-                                <label for="tgl" class="form-label">Tanggal Pengaduan</label>
-                                <input type="date" class="form-control" id="tgl" name="tgl" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nik" class="form-label">NIK (terisi otomatis)</label>
-                                <input type="text" readonly class="form-control-plaintext" id="nik" name="nik" value="<?= $_SESSION['nik'] ?>">
-                            </div>
-                            <div class="mb-3">
-                                <label for="pengaduan" class="form-label">Hal yang ingin Dilaporkan</label>
-                                <textarea class="form-control" id="pengaduan" name="pengaduan" rows="3"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="foto" class="form-label">Foto</label>
-                                <input type="file" class="form-control" name="foto">
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-4">
-                                    <button type="submit" class="btn w-100 text-white" name="tambahPengaduan" id="buat" style="background-color: darkcyan;">Buat Laporan</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                <?php
-            }
-                ?> 
-                    <!-- <div class="card-footer" id="beri-tanggapan">
-                        <h5 class="fw-bold mb-5">.: Beri Tanggapan :.</h5>
-                        <form action="" method="POST">
-                            <div class="mb-3">
-                                <label for="id_pengaduan" class="mb-3">Pilih ID Pengaduan yang Ingin ditanggapi</label>
-                                <select name="id_pengaduan" class="form-select" aria-label="Default select example">
-                                    
-                                        include('../../configuration/koneksi.php'); 
-                                        $q = mysqli_query($con, "SELECT * FROM pengaduan");
-                                        while($o = mysqli_fetch_object($q)){
-                                            ?> 
-                                                <option value="<?= $o -> id_pengaduan ?>"><?= $o -> id_pengaduan ?></option>
-                                            
-                                        }
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="tgl" class="form-label">Tanggal Tanggapan</label>
-                                <input type="date" class="form-control" id="tgl" name="tgl" required>
-                            </div>
-                            <div class="mb-3">
-                                <select name="status" id="status" class="form-select" aria-label="Default select example">
-                                    <option value="proses">Diproses</option>
-                                    <option value="selesai">Selesai</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="tanggapan" class="form-label">Tanggapan</label>
-                                <textarea class="form-control" id="tanggapan" name="tanggapan" rows="3"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <input type="hidden" name="idPetugas" id="idPetugas" value="<?= $_SESSION['id_petugas'] ?>">
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-4">
-                                    <button type="submit" class="btn w-100 text-white" name="tanggap" id="tanggap" style="background-color: darkcyan;">Kirim Tanggapan</button>
-                                </div>
-                            </div>
-                        </form> -->
-                    </div>
-                <!-- 
-            }
-            ?> -->
         </div>
     </div>
 

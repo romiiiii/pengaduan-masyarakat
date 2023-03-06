@@ -49,15 +49,16 @@ if(isset($_POST['edit-mas'])){
     $nik = $_POST['nik'];
     $nama = $_POST['nama'];
     $username = $_POST['username'];
-    $password = $_POST['password'];
+    $password = md5($_POST['password']);
     $telp = $_POST['telp'];
 
     $u = mysqli_query($con, "SELECT * from masyarakat WHERE username='$username'");
     $r = mysqli_num_rows($u);
     if($r == 1){
+        $q = mysqli_query($con, "UPDATE masyarakat SET nik = '$nik', nama = '$nama', password = '$password', telp = '$telp' WHERE nik = '$niklama'");
         ?>
             <div class="alert alert-danger" role="alert">
-                Username Telah Digunakan ! Coba Gunakan Username Lainnya
+                Username Gagal Diganti Karena Username Telah Digunakan ! 
             </div>
         <?php
     }else{
