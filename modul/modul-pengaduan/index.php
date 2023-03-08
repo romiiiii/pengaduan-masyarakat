@@ -65,7 +65,7 @@ include('../../configuration/koneksi.php');
                 <p class="fs-4 fw-bold">.: Pengaduan :.</p>
             </div>
             <div class="card-body">
-            <?php 
+                <?php 
                     if($_SESSION['level'] == 'masyarakat'){
                         ?> 
                             <!-- Button trigger modal -->
@@ -148,7 +148,7 @@ include('../../configuration/koneksi.php');
                                                 <td><img src="../../assets/img/masyarakat/<?= $p -> foto ?>" style="max-height: 100px;"></td>
                                             <?php
                                         }else{
-                                            ?> 
+                                            ?>  
                                                 <td><img src="../../assets/img/noimg.png" style="width: 100px;"></td>
                                             <?php
                                         }
